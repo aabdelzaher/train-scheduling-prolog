@@ -1,0 +1,72 @@
+<div class="w3-container w3-teal">
+  <h1 class=" w3-center">
+    Welcome to {{ title }}!
+  </h1>
+</div>
+<div class="w3-row-padding">
+  <div class="w3-container w3-margin w3-third">
+    <div class="w3-container w3-teal">
+      <h2>Modify Network</h2>
+    </div>
+
+    <div class="w3-quarter">
+      <label>Number of vertices</label>
+      <input class="w3-input w3-border" type="number" name="cntNodes" [(ngModel)]="cntNodes">
+    </div>
+
+    <div class="w3-container">
+      <h2>Add Edge</h2>
+    </div>
+    <div class="w3-row-padding">
+      <div class="w3-quarter">
+        <input class="w3-input w3-border" type="number" placeholder="From" [(ngModel)]="from">
+      </div>
+      <div class="w3-quarter">
+        <input class="w3-input w3-border" type="number" placeholder="To" [(ngModel)]="to">
+      </div>
+      <div class="w3-quarter">
+        <input class="w3-input w3-border" type="number" placeholder="Weight" [(ngModel)]="weight">
+      </div>
+
+      <div class="w3-quarter">
+        <input class="w3-check" type="checkbox" [checked]="multi" (change)="multi = !multi">
+        <label>Is a double edge?</label>
+      </div>
+
+    </div>
+    <div class="w3-container">
+      <button class="w3-button w3-block w3-section w3-blue" (click)="addEdge()">Add</button>
+      <button class="w3-button w3-block w3-section w3-blue" (click)="generateGraph()">Generate Graph</button>
+    </div>
+
+  </div>
+
+  <div class="w3-container w3-rest" id="mynetwork" style="height: 500px;">
+  </div>
+</div>
+
+<div class="w3-container">
+  <div class="w3-container">
+    <h2>Add Train</h2>
+  </div>
+  <div class="w3-row-padding">
+    <div class="w3-quarter">
+      <input class="w3-input w3-border" type="number" placeholder="Station 1" [(ngModel)]="s1">
+    </div>
+    <div class="w3-quarter">
+      <input class="w3-input w3-border" type="number" placeholder="Station 2" [(ngModel)]="s2">
+    </div>
+    <div class="w3-quarter">
+      <input class="w3-input w3-border" type="number" placeholder="Release Time" [(ngModel)]="release">
+    </div>
+    <div class="w3-quarter">
+      <input class="w3-input w3-border" type="number" placeholder="Due Time" [(ngModel)]="due">
+    </div>
+
+    <div class="w3-container">
+      <button class="w3-button w3-block w3-section w3-blue" (click)="addTrain()">Add</button>
+      <button class="w3-button w3-block w3-section w3-blue" (click)="getPlan()">Find Plan</button>
+    </div>
+
+  </div>
+</div>
