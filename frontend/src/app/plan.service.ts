@@ -5,7 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root'
 })
 export class PlanService {
-  apiUrl = "http://192.168.3.170:3000/omar";
+  apiUrl = "http://localhost:3000/getPlan";
 
   constructor(private http: HttpClient) { }
 
