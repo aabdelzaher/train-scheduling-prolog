@@ -19,6 +19,16 @@ export class AppComponent {
   multi: boolean;
   edges;
 
+  s1: number;
+  s2: number;
+  release: number;
+  due: number;
+
+  stations1: number[];
+  stations2: number[];
+  releaseTimes: number[];
+  dueTimes: number[];
+
 
   addEdge() {
     if (this.from == null || this.to == null)
@@ -33,6 +43,10 @@ export class AppComponent {
 
   constructor(private planService: PlanService) {
     this.edges = [];
+    this.stations1 = [];
+    this.stations2 = [];
+    this.releaseTimes = [];
+    this.dueTimes = [];
   }
 
   generateGraph() {
@@ -60,7 +74,7 @@ export class AppComponent {
 
     var edgesArray = [];
     this.edges.forEach(e => {
-      edgesArray.push({ from: e[0]+1, to: e[1]+1 });
+      edgesArray.push({ from: e[0] + 1, to: e[1] + 1 });
     });
 
     var edgees = new DataSet(edgesArray);
@@ -82,8 +96,16 @@ export class AppComponent {
 
   }
 
+  addTrain() {
+    this.stations1.push(this.s1);
+    this.stations2.push(this.s2);
+    this.releaseTimes.push(this.release);
+    this.dueTimes.push(this.due);
+  }
+
   getPlan() {
-    this.planService.getPlan(1, 6, 5);
+    var ret = this.planService.getPlan(this.cntNodes, this.adjMat, this.cntMat, this.stations1, this.stations2, this.releaseTimes, this.dueTimes);
+    console.log("COMPONENT "+ret);
   }
 
 }

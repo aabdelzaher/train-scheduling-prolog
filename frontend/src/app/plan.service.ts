@@ -9,18 +9,19 @@ export class PlanService {
 
   constructor(private http: HttpClient) { }
 
-  getPlan(cntNodes, adjMat, cntMat) {
+  getPlan(cntNodes, adjMat, cntMat, s1, s2, release, due) {
     var body = {
-      "x": 3,
-      "y": [[0, 1, 100], [1, 0, 1], [100, 1, 0]],
-      "z": [[0, 2, 2], [2, 0, 2], [2, 2, 0]],
-      "s1": [2, 1],
-      "s2": [1, 3],
-      "r": [1, 1],
-      "d": [2, 3]
+      "x": cntNodes,
+      "y": adjMat,
+      "z": cntMat,
+      "s1": s1,
+      "s2": s2,
+      "r": release,
+      "d": due
     };
     this.http.post(this.apiUrl, body, { headers: new HttpHeaders({}) }).subscribe(res => {
-      console.log(res);
+      console.log("SERVICE : "+res);
+      return res;
     });
   }
 
