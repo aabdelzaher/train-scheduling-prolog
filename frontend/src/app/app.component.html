@@ -45,6 +45,7 @@
   </div>
 </div>
 
+
 <div class="w3-container">
   <div class="w3-container">
     <h2>Add Train</h2>
@@ -57,15 +58,89 @@
       <input class="w3-input w3-border" type="number" placeholder="Station 2" [(ngModel)]="s2">
     </div>
     <div class="w3-quarter">
-      <input class="w3-input w3-border" type="number" placeholder="Release Time" [(ngModel)]="release">
+      <input class="w3-input w3-border" type="time" placeholder="Release Time" [(ngModel)]="release">
     </div>
     <div class="w3-quarter">
-      <input class="w3-input w3-border" type="number" placeholder="Due Time" [(ngModel)]="due">
+      <input class="w3-input w3-border" type="time" placeholder="Due Time" [(ngModel)]="due">
     </div>
 
     <div class="w3-container">
       <button class="w3-button w3-block w3-section w3-blue" (click)="addTrain()">Add</button>
+    </div>
+
+    <div class="w3-container" *ngIf="stations1.length">
+
+      <h2>Trains</h2>
+
+      <table class="w3-table-all">
+        <thead>
+          <tr class="w3-light-grey">
+            <th>FROM</th>
+            <th>TO</th>
+            <th>RELEASE TIME</th>
+            <th>DUE TIME</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let s of stations1;let idx=index">
+
+          <td>
+            Station {{stations1[idx]}}
+          </td>
+          <td>
+            Station {{stations2[idx]}}
+          </td>
+          <td>
+            {{getTime(releaseTimes[idx])}}
+          </td>
+          <td>
+            {{getTime(dueTimes[idx])}}
+          </td>
+
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="w3-container">
       <button class="w3-button w3-block w3-section w3-blue" (click)="getPlan()">Find Plan</button>
+    </div>
+
+    <div class="w3-container" *ngIf="plan">
+
+      <h2>Trains Tables</h2>
+
+      <div class="w3-container" *ngFor="let train of plan; let idx = index">
+
+        <h3>Train {{idx+1}}</h3>
+        <table class="w3-table-all w3-container">
+          <thead>
+            <tr class="w3-light-grey">
+              <th>leaves from</th>
+              <th>time</th>
+              <th>arrives at</th>
+              <th>time</th>
+            </tr>
+          </thead>
+          <tr *ngFor="let step of train[0];let idx2=index">
+
+            <td>
+              Station {{train[0][idx2]}}
+            </td>
+            <td>
+              {{getTime(train[2][idx2])}}
+            </td>
+            <td>
+              Station {{train[1][idx2]}}
+            </td>
+            <td>
+              {{getTime(train[3][idx2])}}
+            </td>
+
+          </tr>
+
+        </table>
+
+      </div>
     </div>
 
   </div>

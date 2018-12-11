@@ -7,7 +7,7 @@ import { Network, DataSet, Node, Edge, IdType } from 'vis';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterViewInit{
+export class AppComponent implements AfterViewInit {
   title = 'ElsekkaEl7adeed';
   cntNodes = 0;
   inf = 1000;
@@ -18,17 +18,19 @@ export class AppComponent implements AfterViewInit{
   weight: number;
   multi: boolean;
   edges;
+  plan;
 
   s1: number;
   s2: number;
-  release: number;
-  due: number;
+  release: any;
+  due: any;
 
   stations1: number[];
   stations2: number[];
   releaseTimes: number[];
   dueTimes: number[];
 
+  myTime: any;
 
   addEdge() {
     if (this.from == null || this.to == null)
@@ -48,8 +50,30 @@ export class AppComponent implements AfterViewInit{
     this.dueTimes = [];
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
     this.resetGraph();
+  }
+
+  getTime(t) {
+    var am = (t < 720);
+    var h = Math.floor(t / 60);
+    if (h > 12)
+      h -= 12;
+    var m = t % 60;
+    var h2 = "" + h;
+    if (h < 10)
+      h2 = "0" + h;
+    var m2 = "" + m;
+    if (m < 10)
+      m2 = "0" + m;
+    return h2 + ":" + m2 + " " + (am ? "AM" : "PM");
+  }
+
+  getMinutes(t) {
+    if (!t)
+      return -1;
+    var sa = t.split(':');
+    return parseInt(sa[0]) * 60 + parseInt(sa[1]);
   }
 
   generateGraph() {
@@ -97,22 +121,54 @@ export class AppComponent implements AfterViewInit{
   }
 
   resetGraph() {
-    this.cntNodes=2;
-    this.edges = [[0, 1, 10, 1]];
+    this.cntNodes = 3;
+    this.edges = [[0, 1, 10, 1], [1, 2, 20, 1]];
     this.generateGraph();
   }
 
   addTrain() {
+    if (Math.min(this.s1, this.s2) < 1 || Math.max(this.s1, this.s2) > this.cntNodes) {
+      alert("Start and end stations must be between 1 and " + this.cntNodes);
+      return;
+    }
+    if (this.s1 == this.s2) {
+      alert("A train must be between two different stations");
+      return;
+    }
+
+    var releaseTime = this.getMinutes(this.release);
+    var dueTime = this.getMinutes(this.due);
+
+    if (Math.min(releaseTime, dueTime) < 0) {
+      alert("Please enter release and due time correctly");
+      return;
+    }
+    if (Math.min(releaseTime, dueTime) < 0 || Math.max(releaseTime, dueTime) >= 1440) {
+      alert("Please select a valid release and due time");
+      return;
+    }
+    if (this.release >= this.due) {
+      alert("Due time must be after the release time");
+      return;
+    }
+
     this.stations1.push(this.s1);
     this.stations2.push(this.s2);
-    this.releaseTimes.push(this.release);
-    this.dueTimes.push(this.due);
+    this.releaseTimes.push(releaseTime);
+    this.dueTimes.push(dueTime);
   }
 
   getPlan() {
+
+    if (this.stations1.length == 0) {
+      alert("please add trains to find a plan for");
+      return;
+    }
+
     this.planService.getPlan(this.cntNodes, this.adjMat, this.cntMat, this.stations1, this.stations2, this.releaseTimes, this.dueTimes)
       .subscribe(data => {
         console.log(data);
+        this.plan = data;
       });
   }
 
