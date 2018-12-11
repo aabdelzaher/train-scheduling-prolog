@@ -1,4 +1,4 @@
-This a train scheduling web application. The server is implemented using nodejs while the scheduling logic is implemented using Prolog.
+This is a train scheduling web application. The server is implemented using nodejs while the scheduling logic is implemented using Prolog.
 
 To run the program install swi-prolog in the same folder as the project then:
 1- Install the needed dependencies using ``` npm install ```.
@@ -10,5 +10,5 @@ node: symbol lookup error: /usr/lib/swi-prolog/lib/amd64/socket.so: undefined sy
 ```
 run the following command and rerun the server.
 ```
-export LD_PRELOAD=/usr/lib/libswipl.so then rerun the server.
+export LD_PRELOAD=/usr/lib/libswipl.so
 ```
