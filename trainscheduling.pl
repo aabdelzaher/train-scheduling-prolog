@@ -92,7 +92,7 @@ getPath(X,Y,Ret):-
 %and T1 is the time the train has left the last node
 getPlan([_],[],[],[],[],[],1000).
 getPlan(Path,From,To,In,Out,Edge,T1):-
-    [T1,T2] ins 1..1000,
+    [T1,T2] ins 0..1440,
     Path=[X,Y|T],
     From=[X|From2],
     To=[Y|To2],
@@ -244,12 +244,13 @@ generate(X,Max,[X|T1],[Max|T2]):-
 % this is the predicate that solves the problem it takes List of trains represented by two lists S1(from), S2 (to), Release (the Release
 % time for each train) and Due(the time where the plan arrives) and generates a valid plan Plan with the minimum total delay (TotalDelay)
 solveProblem(S1,S2,Release,Due,Plan,TotalDelay):-
-    solveAll(S1,S2,Release,Due,Plan,TotalDelay),
+    (solveAll(S1,S2,Release,Due,Plan,TotalDelay),
     generate(1,1,L1,L2),
     validateAll(L1,L2,Plan),
     validateAll2(L1,L2,Plan),
     flatten(Plan,X),
-    labeling([min(TotalDelay)],X).
+    labeling([min(TotalDelay)],X));
+    TotalDelay #=1-2.
 
 % maxNodes(3).
 % mat(X):- X =  [ [ 0, 10, 1000 ], [ 10, 0, 20 ], [ 1000, 20, 0 ] ].

@@ -48,6 +48,7 @@ export class AppComponent implements AfterViewInit {
     this.stations2 = [];
     this.releaseTimes = [];
     this.dueTimes = [];
+    this.edges = [];
   }
 
   ngAfterViewInit() {
@@ -120,6 +121,9 @@ export class AppComponent implements AfterViewInit {
 
     // initialize your network!
     var network = new Network(container, data, options);
+
+    this.edges=[];
+
   }
 
   resetGraph() {
@@ -170,7 +174,11 @@ export class AppComponent implements AfterViewInit {
     this.planService.getPlan(this.cntNodes, this.adjMat, this.cntMat, this.stations1, this.stations2, this.releaseTimes, this.dueTimes)
       .subscribe(data => {
         console.log(data);
-        this.plan = data;
+        if (!data)
+          alert("There is no valid schedule for these trains within a day");
+        else {
+          this.plan = data;
+        }
       });
   }
 

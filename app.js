@@ -105,5 +105,8 @@ app.post('/getPlan', function (req, res) {
     console.log(solveProblemPredicate);
     var ret = swipl.call(solveProblemPredicate);
 
-    res.send(expand3d(ret.Plan));
+    if (ret.TotalDelay >= 0)
+        res.send(expand3d(ret.Plan));
+    else
+        res.send(null);
 })

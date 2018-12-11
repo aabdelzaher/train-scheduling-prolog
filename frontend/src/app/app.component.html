@@ -36,7 +36,44 @@
     </div>
     <div class="w3-container">
       <button class="w3-button w3-block w3-section w3-blue" (click)="addEdge()">Add</button>
-      <button class="w3-button w3-block w3-section w3-blue" (click)="generateGraph()">Generate Graph</button>
+    </div>
+
+    <div class="w3-container" *ngIf="edges.length">
+
+      <h2>Edges</h2>
+
+      <table class="w3-table-all">
+        <thead>
+          <tr class="w3-light-grey">
+            <th>FROM</th>
+            <th>TO</th>
+            <th>WEIGHT</th>
+            <th>COUNT</th>
+          </tr>
+        </thead>
+        <tr *ngFor="let e of edges">
+
+          <td>
+            Station {{e[0]+1}}
+          </td>
+          <td>
+            Station {{e[1]+1}}
+          </td>
+          <td>
+            {{e[2]}}
+          </td>
+          <td>
+            {{e[3]}}
+          </td>
+
+        </tr>
+
+      </table>
+
+      <div class="w3-container">
+        <button class="w3-button w3-block w3-section w3-blue" (click)="generateGraph()">Generate Graph</button>
+      </div>
+
     </div>
 
   </div>
