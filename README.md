@@ -12,3 +12,13 @@ run the following command and rerun the server.
 ```
 export LD_PRELOAD=/usr/lib/libswipl.so
 ```
+
+To run the front end, move to the frontend folder and run
+```
+npm install
+```
+and then 
+```
+ng serve
+```
+this will run the angular front end on port 4200.
