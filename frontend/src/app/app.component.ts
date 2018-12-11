@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { PlanService } from './plan.service';
 import { Network, DataSet, Node, Edge, IdType } from 'vis';
 
@@ -7,7 +7,7 @@ import { Network, DataSet, Node, Edge, IdType } from 'vis';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit{
   title = 'ElsekkaEl7adeed';
   cntNodes = 0;
   inf = 1000;
@@ -42,11 +42,14 @@ export class AppComponent {
   }
 
   constructor(private planService: PlanService) {
-    this.edges = [];
     this.stations1 = [];
     this.stations2 = [];
     this.releaseTimes = [];
     this.dueTimes = [];
+  }
+
+  ngAfterViewInit(){
+    this.resetGraph();
   }
 
   generateGraph() {
@@ -90,10 +93,13 @@ export class AppComponent {
     var options = {};
 
     // initialize your network!
-    console.log(data);
     var network = new Network(container, data, options);
+  }
 
-
+  resetGraph() {
+    this.cntNodes=2;
+    this.edges = [[0, 1, 10, 1]];
+    this.generateGraph();
   }
 
   addTrain() {
@@ -104,8 +110,10 @@ export class AppComponent {
   }
 
   getPlan() {
-    var ret = this.planService.getPlan(this.cntNodes, this.adjMat, this.cntMat, this.stations1, this.stations2, this.releaseTimes, this.dueTimes);
-    console.log("COMPONENT "+ret);
+    this.planService.getPlan(this.cntNodes, this.adjMat, this.cntMat, this.stations1, this.stations2, this.releaseTimes, this.dueTimes)
+      .subscribe(data => {
+        console.log(data);
+      });
   }
 
 }
