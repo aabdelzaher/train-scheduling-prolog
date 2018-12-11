@@ -9,25 +9,25 @@ swipl.call('consult(trainscheduling)'); // consult the prolog file
 // -----------------------------  HELPER FUNCTIONS -------------------------------- //
 function expand1d(arr) {
     var ret = [];
-    while(arr != '[]'){
+    while (arr != '[]') {
         ret.push(arr.head);
         arr = arr.tail;
     }
     return ret;
 }
 
-function expand2d(arr){
+function expand2d(arr) {
     var ret = [];
-    while(arr != '[]'){
+    while (arr != '[]') {
         ret.push(expand1d(arr.head));
         arr = arr.tail;
     }
     return ret;
 }
 
-function expand3d(arr){
+function expand3d(arr) {
     var ret = [];
-    while(arr != '[]'){
+    while (arr != '[]') {
         ret.push(expand2d(arr.head));
         arr = arr.tail;
     }
@@ -35,10 +35,10 @@ function expand3d(arr){
 }
 
 
-function toString2dArray(arr){
+function toString2dArray(arr) {
     var ret = '[';
-    for(var i = 0; i < arr.length; i++){
-        if(i != 0) ret += ','
+    for (var i = 0; i < arr.length; i++) {
+        if (i != 0) ret += ','
         ret = ret + '[';
         ret += arr[i];
         ret = ret + ']';
@@ -47,8 +47,8 @@ function toString2dArray(arr){
     return ret;
 }
 
-function toString1dArray(arr){
-    return '[' +  arr + ']';
+function toString1dArray(arr) {
+    return '[' + arr + ']';
 }
 
 // --------------------------  END OF HELPER FUNCTIONS ----------------------------- //
@@ -78,31 +78,32 @@ app.post('/getPlan', function (req, res) {
     var startTimes = req.body.r;
     var dueTimes = req.body.d;
 
-    // adding the adjMat predicate
-    var adjMatString = toString2dArray(adjMat);
-    var adjMatPredicate = 'assertz(mat('+adjMatString+'))';
-    swipl.call(adjMatPredicate)
-
-    // adding the cntMat predicate
-    var cntMatString = toString2dArray(cntMat);
-    var cntMatPredicate = 'assertz(cntMat('+cntMatString+'))';
-    swipl.call(cntMatPredicate);
-
-    // adding cntNodes predicate
-    swipl.call('assertz(maxNodes('+ cntNodes + '))');
-
-    // calling the main predicate to solve the problem
-    var solveProblemPredicate = 'solveProblem(' + toString1dArray(startStations) +
-                                ', ' + toString1dArray(endStations) +
-                                ', ' + toString1dArray(startTimes) +
-                                ', ' + toString1dArray(dueTimes) + 
-                                ', Plan, TotalDelay)';
-    var ret = swipl.call(solveProblemPredicate);
-
     // removing the added predicates
     swipl.call('retractall(mat(_))');
     swipl.call('retractall(cntMat(_))');
     swipl.call('retractall(maxNodes(_))');
 
+    // adding the adjMat predicate
+    var adjMatString = toString2dArray(adjMat);
+    var adjMatPredicate = 'assertz(mat(' + adjMatString + '))';
+    swipl.call(adjMatPredicate);
+
+    // adding the cntMat predicate
+    var cntMatString = toString2dArray(cntMat);
+    var cntMatPredicate = 'assertz(cntMat(' + cntMatString + '))';
+    swipl.call(cntMatPredicate);
+
+    // adding cntNodes predicate
+    swipl.call('assertz(maxNodes(' + cntNodes + '))');
+
+    // calling the main predicate to solve the problem
+    var solveProblemPredicate = 'solveProblem(' + toString1dArray(startStations) +
+        ', ' + toString1dArray(endStations) +
+        ', ' + toString1dArray(startTimes) +
+        ', ' + toString1dArray(dueTimes) +
+        ', Plan, TotalDelay)';
+    console.log(solveProblemPredicate);
+    var ret = swipl.call(solveProblemPredicate);
+
     res.send(expand3d(ret.Plan));
-  })
+})

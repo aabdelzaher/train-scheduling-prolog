@@ -251,4 +251,6 @@ solveProblem(S1,S2,Release,Due,Plan,TotalDelay):-
     flatten(Plan,X),
     labeling([min(TotalDelay)],X).
 
-
+% maxNodes(3).
+% mat(X):- X =  [ [ 0, 10, 1000 ], [ 10, 0, 20 ], [ 1000, 20, 0 ] ].
+% cntMat(X):- X =  [ [ 0, 1, 1000 ], [ 1, 0, 1 ], [ 1000, 1, 0 ] ].

@@ -89,6 +89,8 @@ export class AppComponent implements AfterViewInit {
     this.edges.forEach(function (e) {
       self.adjMat[e[0]][e[1]] = e[2];
       self.cntMat[e[0]][e[1]] = e[3];
+      self.adjMat[e[1]][e[0]] = e[2];
+      self.cntMat[e[1]][e[0]] = e[3];
     });
 
     var nodesArray = [];
